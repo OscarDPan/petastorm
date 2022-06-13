@@ -649,7 +649,8 @@ def make_spark_converter(
         df,
         parquet_row_group_size_bytes=DEFAULT_ROW_GROUP_SIZE_BYTES,
         compression_codec=None,
-        dtype='float32'
+        dtype='float32',
+        df_size=None,
 ):
     """Convert a spark dataframe into a :class:`SparkDatasetConverter` object.
     It will materialize a spark dataframe to the directory specified by
@@ -701,7 +702,10 @@ def make_spark_converter(
     spark = _get_spark_session()
     spark_df = spark.read.parquet(dataset_cache_dir_url)
 
-    dataset_size = spark_df.count()
+    if df_size is None:
+        dataset_size = spark_df.count()
+    else:
+        dataset_size = df_size
     parquet_file_url_list = list(spark_df._jdf.inputFiles())
     _check_dataset_file_median_size(parquet_file_url_list)
 
