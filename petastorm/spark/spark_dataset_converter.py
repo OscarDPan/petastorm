@@ -338,7 +338,7 @@ class TFDatasetContextManager(object):
 
         # TODO: auto tune best batch size in default case.
         batch_size = self.batch_size or 32
-        dataset = dataset.batch(batch_size=batch_size)
+        dataset = dataset.batch(batch_size=batch_size, drop_remainder=True)
 
         prefetch = self.prefetch
 
