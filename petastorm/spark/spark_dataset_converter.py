@@ -333,23 +333,23 @@ class TFDatasetContextManager(object):
         dataset = make_petastorm_dataset(self.reader).flat_map(
             tf.data.Dataset.from_tensor_slices)
 
-        if self.shuffling_queue_capacity:
-            dataset = dataset.shuffle(self.shuffling_queue_capacity)
+        # if self.shuffling_queue_capacity:
+        #     dataset = dataset.shuffle(self.shuffling_queue_capacity)
 
         # TODO: auto tune best batch size in default case.
-        batch_size = self.batch_size or 32
-        dataset = dataset.batch(batch_size=batch_size, drop_remainder=True)
-
-        prefetch = self.prefetch
-
-        if prefetch is None:
-            if LooseVersion(tf.__version__) >= LooseVersion('1.14'):
-                # We can make prefetch optimization
-                prefetch = tf.data.experimental.AUTOTUNE
-            else:
-                prefetch = 1
-
-        dataset = dataset.prefetch(prefetch)
+        # batch_size = self.batch_size or 32
+        # dataset = dataset.batch(batch_size=batch_size, drop_remainder=True)
+        #
+        # prefetch = self.prefetch
+        #
+        # if prefetch is None:
+        #     if LooseVersion(tf.__version__) >= LooseVersion('1.14'):
+        #         # We can make prefetch optimization
+        #         prefetch = tf.data.experimental.AUTOTUNE
+        #     else:
+        #         prefetch = 1
+        #
+        # dataset = dataset.prefetch(prefetch)
 
         return dataset
 
